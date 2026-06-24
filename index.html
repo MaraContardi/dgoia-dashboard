@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DGOIA - Dashboard de Gestión</title>
-    <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
 
 ```
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: #f0f2f5;
@@ -127,14 +128,14 @@
         width: fit-content;
     }
 
-    .activo { 
-        background: #d4edda; 
-        color: #155724; 
+    .activo {
+        background: #d4edda;
+        color: #155724;
     }
 
-    .proximo { 
-        background: #fff3cd; 
-        color: #856404; 
+    .proximo {
+        background: #fff3cd;
+        color: #856404;
     }
 
     footer {
@@ -151,8 +152,10 @@
 
 <body>
 
+```
 <header>
     <img src="logo-unne.png" alt="Logo UNNE" onerror="this.style.display='none'">
+
     <div class="titulo">
         <h1>Dirección General de Organización e Innovación Administrativa</h1>
         <p>Universidad Nacional del Nordeste &mdash; Dashboard de Gestión</p>
@@ -161,68 +164,67 @@
 
 <div class="container">
 
-```
-<div class="bienvenida">
-    <h2>&#128075; Bienvenida al sistema de monitoreo DGOIA</h2>
-    <p>
-        Este panel centraliza el seguimiento de las principales funciones de la Dirección General:
-        estructuras organizativas, manuales de procedimientos, planta nodocente, planificación estratégica
-        y coordinación interáreas.
-    </p>
-</div>
+    <div class="bienvenida">
+        <h2>&#128075; Bienvenida al sistema de monitoreo DGOIA</h2>
+        <p>
+            Este panel centraliza el seguimiento de las principales funciones de la Dirección General:
+            estructuras organizativas, manuales de procedimientos, planta nodocente, planificación estratégica
+            y coordinación interáreas.
+        </p>
+    </div>
 
-<div class="modulos">
+    <div class="modulos">
 
-    <a href="eof.html" class="modulo-card">
-        <div class="icono">&#127963;</div>
-        <h3>Estructuras Orgánico-Funcionales</h3>
-        <p>Seguimiento del estado de aprobación de EOF por unidad académica y dependencia central.</p>
-        <span class="estado activo">&#9679; Activo</span>
-    </a>
+        <a href="eof.html" class="modulo-card">
+            <div class="icono">&#127963;</div>
+            <h3>Estructuras Orgánico-Funcionales</h3>
+            <p>Seguimiento del estado de aprobación de EOF por unidad académica y dependencia central.</p>
+            <span class="estado activo">&#9679; Activo</span>
+        </a>
 
-    <a href="#" class="modulo-card">
-        <div class="icono">&#128214;</div>
-        <h3>Manuales de Procedimientos</h3>
-        <p>Control de elaboración, revisión y aprobación de manuales institucionales.</p>
-        <span class="estado proximo">&#9679; Próximo</span>
-    </a>
+        <a href="#" class="modulo-card">
+            <div class="icono">&#128214;</div>
+            <h3>Manuales de Procedimientos</h3>
+            <p>Control de elaboración, revisión y aprobación de manuales institucionales.</p>
+            <span class="estado proximo">&#9679; Próximo</span>
+        </a>
 
-    <a href="plantanodocente.html" class="modulo-card">
-        <div class="icono">&#128101;</div>
-        <h3>Planta Nodocente</h3>
-        <p>Monitoreo de cargos, vacantes, concursos y movimientos del personal nodocente.</p>
-        <span class="estado activo">&#9679; Activo</span>
-    </a>
+        <a href="plantanodocente.html" class="modulo-card">
+            <div class="icono">&#128101;</div>
+            <h3>Planta Nodocente</h3>
+            <p>Monitoreo de cargos, vacantes, concursos y movimientos del personal nodocente.</p>
+            <span class="estado activo">&#9679; Activo</span>
+        </a>
 
-    <a href="#" class="modulo-card">
-        <div class="icono">&#127919;</div>
-        <h3>Planificación Estratégica</h3>
-        <p>Seguimiento de objetivos, metas e indicadores del plan de gestión.</p>
-        <span class="estado proximo">&#9679; Próximo</span>
-    </a>
+        <a href="#" class="modulo-card">
+            <div class="icono">&#127919;</div>
+            <h3>Planificación Estratégica</h3>
+            <p>Seguimiento de objetivos, metas e indicadores del plan de gestión.</p>
+            <span class="estado proximo">&#9679; Próximo</span>
+        </a>
 
-    <a href="#" class="modulo-card">
-        <div class="icono">&#129309;</div>
-        <h3>Coordinación Interáreas</h3>
-        <p>Registro de reuniones, acuerdos y acciones conjuntas con otras dependencias.</p>
-        <span class="estado proximo">&#9679; Próximo</span>
-    </a>
+        <a href="#" class="modulo-card">
+            <div class="icono">&#129309;</div>
+            <h3>Coordinación Interáreas</h3>
+            <p>Registro de reuniones, acuerdos y acciones conjuntas con otras dependencias.</p>
+            <span class="estado proximo">&#9679; Próximo</span>
+        </a>
 
-    <a href="#" class="modulo-card">
-        <div class="icono">&#128200;</div>
-        <h3>Indicadores Generales</h3>
-        <p>Panel de KPIs consolidados de todas las áreas bajo supervisión.</p>
-        <span class="estado proximo">&#9679; Próximo</span>
-    </a>
+        <a href="#" class="modulo-card">
+            <div class="icono">&#128200;</div>
+            <h3>Indicadores Generales</h3>
+            <p>Panel de KPIs consolidados de todas las áreas bajo supervisión.</p>
+            <span class="estado proximo">&#9679; Próximo</span>
+        </a>
 
-</div>
-```
+    </div>
 
 </div>
 
 <footer>
     <p>DGOIA &mdash; UNNE &mdash; Sistema de monitoreo interno &mdash; 2025</p>
 </footer>
+```
 
 </body>
 </html>
