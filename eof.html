@@ -736,24 +736,24 @@ window.addEventListener("load", function() {
     });
 
     // Grafico 2: Estado general (dona)
-    var ctxEst = document.getElementById("graficoEstado").getContext("2d");
-    new Chart(ctxEst, {
-        type: "doughnut",
-        data: {
-            labels: ["Aprobada CS","En tr\u00e1mite","En elaboraci\u00f3n"],
-            datasets: [{
-                data: [10, 1, 1],
-                backgroundColor: ["#28a745","#ffc107","#dc3545"],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: "bottom" }
-            }
+var ctxEst = document.getElementById("graficoEstado").getContext("2d");
+new Chart(ctxEst, {
+    type: "doughnut",
+    data: {
+        labels: ["Aprobada CS", "En elaboraci\u00f3n"],
+        datasets: [{
+            data: [10, 2],
+            backgroundColor: ["#28a745", "#dc3545"],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: "bottom" }
         }
-    });
+    }
+});
 
 });
 </script>
