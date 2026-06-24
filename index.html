@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DGOIA - Dashboard de Gestión</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
+            color: white;
+            padding: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-circle {
+            width: 55px;
+            height: 55px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .header-info {
+            margin-left: auto;
+            text-align: right;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .header-subtitle {
+            padding: 10px 30px;
+            background: rgba(0,0,0,0.15);
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* NAV */
+        nav {
+            background: #1a3a5c;
+            padding: 0 30px;
+            display: flex;
+            gap: 5px;
+            border-bottom: 3px solid #f0a500;
+        }
+
+        nav a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -3px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+
+        nav a.active {
+            color: #f0a500;
+            border-bottom-color: #f0a500;
+        }
+
+        /* MAIN */
+        main {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* BIENVENIDA */
+        .welcome-banner {
+            background: linear-gradient(135deg, #1a3a5c, #2d6a9f);
+            color: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-banner h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .welcome-banner p {
+            opacity: 0.85;
+            font-size: 14px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .welcome-badge {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 15px 25px;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .welcome-badge .big-num {
+            font-size: 42px;
+            font-weight: 700;
+            color: #f0a500;
+        }
+
+        .welcome-badge p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* KPI CARDS */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 5px solid;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .kpi-icon {
+            font-size: 32px;
+            width: 55px;
+            height: 55px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .kpi-info .number {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .kpi-info .label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .kpi-info .sublabel {
+            font-size: 11px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        /* MÓDULOS GRID */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a3a5c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .module-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .module-header {
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .module-header .icon {
+            font-size: 28px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .module-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .module-header p {
+            font-size: 12px;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        .module-body {
+            padding: 20px;
+        }
+
+        .module-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+
+        .module-stat:last-child {
+            border-bottom: none;
+        }
+
+        .stat-badge {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-green { background: #d4edda; color: #155724; }
+        .badge-yellow { background: #fff3cd; color: #856404; }
+        .badge-red { background: #f8d7da; color: #721c24; }
+        .badge-blue { background: #cce5ff; color: #004085; }
+        .badge-gray { background: #e2e3e5; color: #383d41; }
+
+        .module-footer {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn-module {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: white;
+        }
+
+        .btn-module:hover {
+            opacity: 0.85;
+            transform: translateX(3px);
+        }
+
+        /* PROGRESS BAR */
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1a3a5c;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            margin-top: 40px;
+        }
+
+        footer strong {
+            color: #f0a500;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            main { padding: 15px; }
+            .welcome-banner { flex-direction: column; gap: 20px; }
+            nav { overflow-x: auto; }
+            nav a span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="header-top">
+        <div class="logo-area">
+            <div class="logo-circle">???</div>
+            <div class="logo-text">
+                <h1>DGOIA</h1>
+                <p>Dirección General de Organización e Innovación Administrativa</p>
+            </div>
+        </div>
+        <div class="header-info">
+            <div>UNNE — Universidad Nacional del Nordeste</div>
+            <div id="fecha-actual"></div>
+        </div>
+    </div>
+    <div class="header-subtitle">
+        ?? Código de Cargo: H.101 | Dashboard de Seguimiento y Gestión Institucional
+    </div>
+</header>
+
+<!-- NAV -->
+<nav>
+    <a href="index.html" class="active">?? <span>Inicio</span></a>
+    <a href="eof.html">??? <span>Estructuras EOF</span></a>
+    <a href="#">?? <span>Manuales</span></a>
+    <a href="#">?? <span>Planta NoDocente</span></a>
+    <a href="#">?? <span>Planificación</span></a>
+    <a href="#">?? <span>Interáreas</span></a>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+    <!-- BIENVENIDA -->
+    <div class="welcome-banner">
+        <div>
+            <h2>?? Dashboard de Gestión DGOIA</h2>
+            <p>Sistema de seguimiento integral de las funciones del cargo H.101. 
+            Monitoreo en tiempo real del avance de Estructuras Orgánico-Funcionales, 
+            Manuales de Procedimientos, control de Planta NoDocente y planificación estratégica.</p>
+        </div>
+        <div class="welcome-badge">
+            <div class="big-num">2025</div>
+            <p>Año de gestión<br>activa</p>
+        </div>
+    </div>
+
+    <!-- KPIs GENERALES -->
+    <div class="kpi-grid">
+        <a href="eof.html" class="kpi-card" style="border-color: #27ae60;">
+            <div class="kpi-icon" style="background: #d4edda;">???</div>
+            <div class="kpi-info">
+                <div class="number" style="color: #27ae60;">10</div>
+                <div class="label">EOF Aprobadas por CS</div>
+                <div class="sublabel">de 12 unidades totales</div>
+            </div>
+        </a>
+        <a href="eof.html" class="kpi-card" style="border-color: #f39c12;">
+            <div class="kpi-icon" style="background: #fff3cd;">?</div>
+            <div class="kpi-info">
+                <div class="number" style="color: #f39c12;">1</div>
+                <div class="label">EOF En Trámite</div>
+                <div class="sublabel">Pendiente de aprobación</div>
+            </div>
+        </a>
+        <a href="eof.html" class="kpi-card" style="border-color: #e74c3c;">
+            <div class="kpi-icon" style="background: #f8d7da;">??</div>
+            <div class="kpi-info">
+                <div class="number" style="color: #e74c3c;">1</div>
+                <div class="label">EOF En Elaboración</div>
+                <div class="sublabel">En proceso de redacción</div>
+            </div>
+        </a>
+        <div class="kpi-card" style="border-color: #3498db;">
+            <div class="kpi-icon" style="background: #cce5ff;">??</div>
+            <div class="kpi-info">
+                <div class="number" style="color: #3498db;">—</div>
+                <div class="label">Manuales</div>
+                <div class="sublabel">Módulo en desarrollo</div>
+            </div>
+        </div>
+        <div class="kpi-card" style="border-color: #9b59b6;">
+            <div class="kpi-icon" style="background: #e8d5f5;">??</div>
+            <div class="kpi-info">
+                <div class="number" style="color: #9b59b6;">—</div>
+                <div class="label">Planta NoDocente</div>
+                <div class="sublabel">Módulo en desarrollo</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MÓDULOS -->
+    <div class="section-title">??? Módulos de Gestión</div>
+
+    <div class="modules-grid">
+
+        <!-- EOF -->
+        <div class="module-card">
+            <div class="module-header" style="background: linear-gradient(135deg, #1a3a5c, #2d6a9f);">
+                <div class="icon">???</div>
+                <div>
+                    <h3>Estructuras Orgánico-Funcionales</h3>
+                    <p>Seguimiento de aprobación por Consejo Superior</p>
+                </div>
+            </div>
+            <div class="module-body">
+                <div class="module-stat">
+                    <span>? Aprobadas por CS</span>
+                    <span class="stat-badge badge-green">10 unidades</span>
+                </div>
+                <div class="module-stat">
+                    <span>? En trámite CS</span>
+                    <span class="stat-badge badge-yellow">1 unidad</span>
+                </div>
+                <div class="module-stat">
+                    <span>?? En elaboración</span>
+                    <span class="stat-badge badge-red">1 unidad</span>
+                </div>
+                <div class="module-stat">
+                    <span>?? Progreso general</span>
+                    <span class="stat-badge badge-blue">83%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 83%; background: #27ae60;"></div>
+                </div>
+            </div>
+            <div class="module-footer">
+                <a href="eof.html" class="btn-module" style="background: #1a3a5c;">
+                    Ver detalle completo ?
+                </a>
+            </div>
+        </div>
+
+        <!-- MANUALES -->
+        <div class="module-card">
+            <div class="module-header" style="background: linear-gradient(135deg, #1e6b3c, #27ae60);">
+                <div class="icon">??</div>
+                <div>
+                    <h3>Manuales de Procedimientos</h3>
+                    <p>Elaboración y actualización de manuales</p>
+                </div>
+            </div>
+            <div class="module-body">
+                <div class="module-stat">
+                    <span>?? Manuales vigentes</span>
+                    <span class="stat-badge badge-gray">En relevamiento</span>
+                </div>
+                <div class="module-stat">
+                    <span>?? En actualización</span>
+                    <span class="stat-badge badge-gray">En relevamiento</span>
+                </div>
+                <div class="module-stat">
+                    <span>?? A elaborar</span>
+                    <span class="stat-badge badge-gray">En relevamiento</span>
+                </div>
+                <div class="module-stat">
+                    <span>?? Estado general</span>
+                    <span class="stat-badge badge-yellow">En proceso</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 20%; background: #f39c12;"></div>
+                </div>
+            </div>
+            <div class="module-footer">
+                <a href="#" class="btn-module" style="background: #27ae60; opacity: 0.6; cursor: not-allowed;">
+                    Próximamente ?
+                </a>
+            </div>
+        </div>
+
+        <!-- PLANTA NODOCENTE -->
+        <div class="module-card">
+            <div class="module-header" style="background: linear-gradient(135deg, #6a1a8c, #9b59b6);">
+                <div class="icon">??</div>
+                <div>
+                    <h3>Control Planta NoDocente</h3>
+                    <p>Monitoreo de cargos y movimientos</p>
+                </div>
+            </div>
+            <div class="module-body">
+                <div class="module-stat">
+                    <span>?? Cargos relevados</span>
+                    <span class="stat-badge badge-gray">En relevamiento</span>
+                </div>
+                <div class="module-stat">
+                    <span>?? Movimientos activos</span>
+                    <span class="stat-badge badge-gray">En relevamiento</span>
+                </div>
+                <div class="module-stat">
+                    <span>?? Irregularidades</span>
+                    <span class="stat-badge badge-gray">En relevamiento</span>
+                </div>
+                <div class="module-stat">
+                    <span>?? Estado general</span>
+                    <span class="stat-badge badge-yellow">En proceso</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 15%; background: #9b59b6;"></div>
+                </div>
+            </div>
+            <div class="module-footer">
+                <a href="#" class="btn-module" style="background: #9b59b6; opacity: 0.6; cursor: not-allowed;">
+                    Próximamente ?
+                </a>
+            </div>
+        </div>
+
+        <!-- PLANIFICACIÓN -->
+        <div class="module-card">
+            <div class="module-header" style="background: linear-gradient(135deg, #b8520a, #e67e22);">
+                <div class="icon">??</div>
+                <div>
+                    <h3>Planificación Estratégica</h3>
+                    <p>Objetivos y metas de gestión 2025</p>
+                </div>
+            </div>
+            <div class="module-body">
+                <div class="module-stat">
+                    <span>?? Objetivos definidos</span>
+                    <span class="stat-badge badge-gray">En elaboración</span>
+                </div>
+                <div class="module-stat">
+                    <span>? Objetivos cumplidos</span>
+                    <span class="stat-badge badge-gray">En elaboración</span>
+                </div>
+                <div class="module-stat">
+                    <span>?? Próximas metas</span>
+                    <span class="stat-badge badge-gray">En elaboración</span>
+                </div>
+                <div class="module-stat">
+                    <span>?? Avance general</span>
+                    <span class="stat-badge badge-yellow">En proceso</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 10%; background: #e67e22;"></div>
+                </div>
+            </div>
+            <div class="module-footer">
+                <a href="#" class="btn-module" style="background: #e67e22; opacity: 0.6; cursor: not-allowed;">
+                    Próximamente ?
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <p><strong>DGOIA</strong> — Dirección General de Organización e Innovación Administrativa</p>
+    <p style="margin-top:5px;">Universidad Nacional del Nordeste | Cargo H.101 | Dashboard v1.0 — 2025</p>
+</footer>
+
+<script>
+    // Fecha actual
+    const fecha = new Date();
+    const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('fecha-actual').textContent = fecha.toLocaleDateString('es-AR', opciones);
+</script>
+
+</body>
+</html>
