@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EOF - Estructuras Org&aacute;nico Funcionales</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -122,6 +123,7 @@
         .badge-verde { background: #d4edda; color: #155724; }
         .badge-amarillo { background: #fff3cd; color: #856404; }
         .badge-rojo { background: #f8d7da; color: #721c24; }
+        .badge-gris { background: #e2e3e5; color: #383d41; }
         .semaforo {
             width: 14px;
             height: 14px;
@@ -133,6 +135,91 @@
         .sem-verde { background: #28a745; }
         .sem-amarillo { background: #ffc107; }
         .sem-rojo { background: #dc3545; }
+        .sem-gris { background: #adb5bd; }
+
+        /* Graficos */
+        .graficos-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        @media (max-width: 768px) {
+            .graficos-grid { grid-template-columns: 1fr; }
+        }
+        .grafico-box {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .grafico-box h2 {
+            color: #1a3a5c;
+            font-size: 1.0em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        /* Seccion CCT */
+        .cct-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .cct-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+            border-left: 5px solid #ccc;
+        }
+        .cct-card.completo { border-left-color: #28a745; }
+        .cct-card.avanzado { border-left-color: #17a2b8; }
+        .cct-card.parcial  { border-left-color: #ffc107; }
+        .cct-card.inicial  { border-left-color: #fd7e14; }
+        .cct-card.pendiente{ border-left-color: #dc3545; }
+        .cct-num {
+            font-size: 2em;
+            font-weight: 700;
+            color: #1a3a5c;
+        }
+        .cct-label {
+            font-size: 0.8em;
+            color: #555;
+            margin-top: 4px;
+        }
+
+        /* Barras de progreso */
+        .barra-container {
+            margin-bottom: 12px;
+        }
+        .barra-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85em;
+            margin-bottom: 4px;
+            color: #444;
+        }
+        .barra-track {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 14px;
+            overflow: hidden;
+        }
+        .barra-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.6s ease;
+        }
+        .fill-completo  { background: #28a745; }
+        .fill-avanzado  { background: #17a2b8; }
+        .fill-parcial   { background: #ffc107; }
+        .fill-inicial   { background: #fd7e14; }
+        .fill-pendiente { background: #dc3545; }
+
         footer {
             text-align: center;
             padding: 20px;
@@ -158,6 +245,7 @@
 
 <div class="container">
 
+    <!-- KPIs principales -->
     <div class="kpi-grid">
         <div class="kpi-card azul">
             <div class="kpi-numero">12</div>
@@ -177,12 +265,25 @@
         </div>
     </div>
 
+    <!-- Graficos -->
+    <div class="graficos-grid">
+        <div class="grafico-box">
+            <h2>&#128200; Evoluci&oacute;n anual de aprobaciones</h2>
+            <canvas id="graficoEvolucion" height="200"></canvas>
+        </div>
+        <div class="grafico-box">
+            <h2>&#128257; Estado general de las EOF</h2>
+            <canvas id="graficoEstado" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- Tabla de seguimiento -->
     <div class="seccion">
-        <h2>Seguimiento por Unidad Acad&eacute;mica</h2>
+        <h2>&#128203; Seguimiento por Unidad Acad&eacute;mica</h2>
 
         <div class="filtros">
-            <input type="text" id="buscar" 
-                placeholder="Buscar unidad..." 
+            <input type="text" id="buscar"
+                placeholder="Buscar unidad..."
                 onkeyup="filtrarTabla()">
             <select id="filtroEstado" onchange="filtrarTabla()">
                 <option value="">Todos los estados</option>
@@ -208,7 +309,235 @@
                     <th>Observaciones</th>
                 </tr>
             </thead>
-            <tbody id="cuerpoTabla">
+            <tbody id="cuerpoTabla"></tbody>
+        </table>
+    </div>
+
+    <!-- Seccion CCT -->
+    <div class="seccion">
+        <h2>&#128269; An&aacute;lisis de completitud seg&uacute;n CCT (hasta Categor&iacute;a 7)</h2>
+        <p style="font-size:0.88em; color:#666; margin-bottom:20px;">
+            Nivel de cobertura del Manual de Misiones y Funciones para el personal no docente,
+            seg&uacute;n el Convenio Colectivo de Trabajo, hasta la categor&iacute;a 7.
+        </p>
+
+        <!-- Tarjetas resumen CCT -->
+        <div class="cct-grid">
+            <div class="cct-card completo">
+                <div class="cct-num">1</div>
+                <div class="cct-label">Completo (100%)</div>
+            </div>
+            <div class="cct-card avanzado">
+                <div class="cct-num">3</div>
+                <div class="cct-label">Avanzado (70-99%)</div>
+            </div>
+            <div class="cct-card parcial">
+                <div class="cct-num">4</div>
+                <div class="cct-label">Parcial (40-69%)</div>
+            </div>
+            <div class="cct-card inicial">
+                <div class="cct-num">1</div>
+                <div class="cct-label">Inicial (1-39%)</div>
+            </div>
+            <div class="cct-card pendiente">
+                <div class="cct-num">2</div>
+                <div class="cct-label">Sin aprobaci&oacute;n</div>
+            </div>
+        </div>
+
+        <!-- Barras de progreso -->
+        <div style="margin-bottom: 25px;">
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Facultad de Medicina</span>
+                    <span><strong>100%</strong> &mdash; Completo</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-completo" style="width:100%"></div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Facultad de Cs. Agrarias</span>
+                    <span><strong>71%</strong> &mdash; Avanzado</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-avanzado" style="width:71%"></div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Facultad de Derecho</span>
+                    <span><strong>71%</strong> &mdash; Avanzado</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-avanzado" style="width:71%"></div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Facultad de Odontolog&iacute;a</span>
+                    <span><strong>71%</strong> &mdash; Avanzado</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-avanzado" style="width:71%"></div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Facultad de Arquitectura</span>
+                    <span><strong>43%</strong> &mdash; Parcial</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-parcial" style="width:43%"></div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Facultad de Cs. Econ&oacute;micas</span>
+                    <span><strong>43%</strong> &mdash; Parcial</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-parcial" style="width:43%"></div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Facultad de Artes</span>
+                    <span><strong>43%</strong> &mdash; Parcial</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-parcial" style="width:43%"></div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Rectorado</span>
+                    <span><strong>43%</strong> &mdash; Parcial</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-parcial" style="width:43%"></div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Facultad de Cs. Veterinarias</span>
+                    <span><strong>15%</strong> &mdash; Inicial</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-inicial" style="width:15%"></div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Facultad de Humanidades</span>
+                    <span><strong>0%</strong> &mdash; Sin aprobaci&oacute;n</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-pendiente" style="width:0%"></div>
+                </div>
+            </div>
+
+            <div class="barra-container">
+                <div class="barra-label">
+                    <span>Facultad de Ingenier&iacute;a</span>
+                    <span><strong>0%</strong> &mdash; Sin aprobaci&oacute;n</span>
+                </div>
+                <div class="barra-track">
+                    <div class="barra-fill fill-pendiente" style="width:0%"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Tabla detallada CCT -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Unidad</th>
+                    <th>Cats. cubiertas</th>
+                    <th>Total cats.</th>
+                    <th>Cobertura</th>
+                    <th>Nivel</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Facultad de Medicina</td>
+                    <td>7</td><td>7</td>
+                    <td>100%</td>
+                    <td><span class="badge badge-verde">Completo</span></td>
+                </tr>
+                <tr>
+                    <td>Facultad de Cs. Agrarias</td>
+                    <td>5</td><td>7</td>
+                    <td>71%</td>
+                    <td><span class="badge" style="background:#d1ecf1;color:#0c5460;">Avanzado</span></td>
+                </tr>
+                <tr>
+                    <td>Facultad de Derecho</td>
+                    <td>5</td><td>7</td>
+                    <td>71%</td>
+                    <td><span class="badge" style="background:#d1ecf1;color:#0c5460;">Avanzado</span></td>
+                </tr>
+                <tr>
+                    <td>Facultad de Odontolog&iacute;a</td>
+                    <td>5</td><td>7</td>
+                    <td>71%</td>
+                    <td><span class="badge" style="background:#d1ecf1;color:#0c5460;">Avanzado</span></td>
+                </tr>
+                <tr>
+                    <td>Facultad de Arquitectura</td>
+                    <td>3</td><td>7</td>
+                    <td>43%</td>
+                    <td><span class="badge badge-amarillo">Parcial</span></td>
+                </tr>
+                <tr>
+                    <td>Facultad de Cs. Econ&oacute;micas</td>
+                    <td>3</td><td>7</td>
+                    <td>43%</td>
+                    <td><span class="badge badge-amarillo">Parcial</span></td>
+                </tr>
+                <tr>
+                    <td>Facultad de Artes</td>
+                    <td>3</td><td>7</td>
+                    <td>43%</td>
+                    <td><span class="badge badge-amarillo">Parcial</span></td>
+                </tr>
+                <tr>
+                    <td>Rectorado</td>
+                    <td>3</td><td>7</td>
+                    <td>43%</td>
+                    <td><span class="badge badge-amarillo">Parcial</span></td>
+                </tr>
+                <tr>
+                    <td>Facultad de Cs. Veterinarias</td>
+                    <td>1</td><td>7</td>
+                    <td>15%</td>
+                    <td><span class="badge" style="background:#fde8d8;color:#7d3c00;">Inicial</span></td>
+                </tr>
+                <tr>
+                    <td>Facultad de Humanidades</td>
+                    <td>0</td><td>7</td>
+                    <td>0%</td>
+                    <td><span class="badge badge-rojo">Sin aprobaci&oacute;n</span></td>
+                </tr>
+                <tr>
+                    <td>Facultad de Ingenier&iacute;a</td>
+                    <td>0</td><td>7</td>
+                    <td>0%</td>
+                    <td><span class="badge badge-rojo">Sin aprobaci&oacute;n</span></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -220,105 +549,111 @@
 </footer>
 
 <script>
+// =============================================
+// DATOS DE LA TABLA PRINCIPAL
+// =============================================
 var datos = [
     {
         estado: "Aprobada CS",
-        unidad: "Facultad de Ciencias Exactas",
+        unidad: "Facultad de Cs. Veterinarias",
         tipo: "Unidad Academica",
-        resolucion: "RES-2024-406",
-        fecha: "2024-08-15",
-        obs: "Aprobada sin observaciones"
-    },
-    {
-        estado: "Aprobada CS",
-        unidad: "Facultad de Medicina",
-        tipo: "Unidad Academica",
-        resolucion: "RES-2024-483",
-        fecha: "2024-09-20",
-        obs: "Aprobada sin observaciones"
-    },
-    {
-        estado: "Aprobada CS",
-        unidad: "Facultad de Ingenier&iacute;a",
-        tipo: "Unidad Academica",
-        resolucion: "RES-2024-312",
-        fecha: "2024-07-10",
-        obs: "Aprobada sin observaciones"
-    },
-    {
-        estado: "Aprobada CS",
-        unidad: "Facultad de Humanidades",
-        tipo: "Unidad Academica",
-        resolucion: "RES-2024-290",
-        fecha: "2024-06-05",
-        obs: "Aprobada sin observaciones"
-    },
-    {
-        estado: "Aprobada CS",
-        unidad: "Facultad de Derecho",
-        tipo: "Unidad Academica",
-        resolucion: "RES-2024-350",
-        fecha: "2024-07-22",
-        obs: "Aprobada sin observaciones"
-    },
-    {
-        estado: "Aprobada CS",
-        unidad: "Facultad de Veterinaria",
-        tipo: "Unidad Academica",
-        resolucion: "RES-2024-401",
-        fecha: "2024-08-10",
-        obs: "Aprobada sin observaciones"
-    },
-    {
-        estado: "Aprobada CS",
-        unidad: "Facultad de Ciencias Agrarias",
-        tipo: "Unidad Academica",
-        resolucion: "RES-2024-420",
-        fecha: "2024-08-28",
-        obs: "Aprobada sin observaciones"
-    },
-    {
-        estado: "Aprobada CS",
-        unidad: "Facultad de Arquitectura",
-        tipo: "Unidad Academica",
-        resolucion: "RES-2024-455",
-        fecha: "2024-09-05",
-        obs: "Aprobada sin observaciones"
+        resolucion: "RES-CS-2021-XXX",
+        fecha: "2021",
+        obs: "Aprobada por CS"
     },
     {
         estado: "Aprobada CS",
         unidad: "Facultad de Odontolog&iacute;a",
         tipo: "Unidad Academica",
-        resolucion: "RES-2024-470",
-        fecha: "2024-09-12",
-        obs: "Aprobada sin observaciones"
+        resolucion: "RES-CS-2022-XXX",
+        fecha: "2022",
+        obs: "Aprobada por CS"
     },
     {
         estado: "Aprobada CS",
-        unidad: "Facultad de Ciencias Econ&oacute;micas",
+        unidad: "Facultad de Cs. Agrarias",
         tipo: "Unidad Academica",
-        resolucion: "RES-2024-490",
-        fecha: "2024-09-25",
-        obs: "Aprobada sin observaciones"
+        resolucion: "RES-CS-2022-XXX",
+        fecha: "2022",
+        obs: "Aprobada por CS"
+    },
+    {
+        estado: "Aprobada CS",
+        unidad: "Facultad de Artes",
+        tipo: "Unidad Academica",
+        resolucion: "RES-CS-2023-XXX",
+        fecha: "2023",
+        obs: "Aprobada por CS"
+    },
+    {
+        estado: "Aprobada CS",
+        unidad: "Rectorado",
+        tipo: "Dependencia Central",
+        resolucion: "RES-CS-2023-XXX",
+        fecha: "2023",
+        obs: "Aprobada por CS"
+    },
+    {
+        estado: "Aprobada CS",
+        unidad: "Facultad de Medicina",
+        tipo: "Unidad Academica",
+        resolucion: "RES-CS-2023-XXX",
+        fecha: "2023",
+        obs: "Aprobada por CS"
+    },
+    {
+        estado: "Aprobada CS",
+        unidad: "Facultad de Cs. Econ&oacute;micas",
+        tipo: "Unidad Academica",
+        resolucion: "RES-CS-2024-XXX",
+        fecha: "2024",
+        obs: "Aprobada por CS"
+    },
+    {
+        estado: "Aprobada CS",
+        unidad: "Facultad de Derecho",
+        tipo: "Unidad Academica",
+        resolucion: "RES-CS-2024-XXX",
+        fecha: "2024",
+        obs: "Aprobada por CS"
+    },
+    {
+        estado: "Aprobada CS",
+        unidad: "Facultad de Arquitectura",
+        tipo: "Unidad Academica",
+        resolucion: "RES-CS-2025-XXX",
+        fecha: "2025",
+        obs: "Aprobada por CS"
+    },
+    {
+        estado: "Aprobada CS",
+        unidad: "Facultad de Humanidades",
+        tipo: "Unidad Academica",
+        resolucion: "RES-CS-2026-XXX",
+        fecha: "2026",
+        obs: "Aprobada por CS"
     },
     {
         estado: "En tramite",
-        unidad: "Facultad de Artes",
+        unidad: "Facultad de Ingenier&iacute;a",
         tipo: "Unidad Academica",
         resolucion: "En tr&aacute;mite",
-        fecha: "2024-10-01",
+        fecha: "-",
         obs: "Expediente ingresado, pendiente dictamen"
     },
     {
         estado: "En elaboracion",
-        unidad: "Rectorado",
-        tipo: "Dependencia Central",
+        unidad: "Facultad de Cs. Exactas",
+        tipo: "Unidad Academica",
         resolucion: "-",
         fecha: "-",
         obs: "En proceso de relevamiento"
     }
 ];
 
+// =============================================
+// FUNCIONES DE LA TABLA
+// =============================================
 function getBadge(estado) {
     if (estado === "Aprobada CS") {
         return '<span class="semaforo sem-verde"></span>'
@@ -332,42 +667,95 @@ function getBadge(estado) {
         return '<span class="semaforo sem-rojo"></span>'
              + '<span class="badge badge-rojo">En elaboraci&oacute;n</span>';
     }
-    return estado;
+    return '<span class="semaforo sem-gris"></span>'
+         + '<span class="badge badge-gris">' + estado + '</span>';
 }
 
-function renderTabla(filas) {
+function renderTabla(lista) {
     var tbody = document.getElementById("cuerpoTabla");
     tbody.innerHTML = "";
-    for (var i = 0; i < filas.length; i++) {
-        var f = filas[i];
-        var fila = "<tr>";
-        fila += "<td>" + getBadge(f.estado) + "</td>";
-        fila += "<td>" + f.unidad + "</td>";
-        fila += "<td>" + f.tipo + "</td>";
-        fila += "<td>" + f.resolucion + "</td>";
-        fila += "<td>" + f.fecha + "</td>";
-        fila += "<td>" + f.obs + "</td>";
-        fila += "</tr>";
-        tbody.innerHTML += fila;
-    }
+    lista.forEach(function(d) {
+        var tr = document.createElement("tr");
+        tr.innerHTML =
+            "<td>" + getBadge(d.estado) + "</td>" +
+            "<td>" + d.unidad + "</td>" +
+            "<td>" + (d.tipo === "Unidad Academica"
+                ? "Unidad Acad&eacute;mica"
+                : d.tipo) + "</td>" +
+            "<td>" + d.resolucion + "</td>" +
+            "<td>" + d.fecha + "</td>" +
+            "<td>" + d.obs + "</td>";
+        tbody.appendChild(tr);
+    });
 }
 
 function filtrarTabla() {
-    var buscar = document.getElementById("buscar").value.toLowerCase();
+    var texto  = document.getElementById("buscar").value.toLowerCase();
     var estado = document.getElementById("filtroEstado").value;
-    var tipo = document.getElementById("filtroTipo").value;
+    var tipo   = document.getElementById("filtroTipo").value;
 
-    var resultado = datos.filter(function(f) {
-        var coincideBuscar = f.unidad.toLowerCase().indexOf(buscar) > -1;
-        var coincideEstado = estado === "" || f.estado === estado;
-        var coincideTipo = tipo === "" || f.tipo === tipo;
-        return coincideBuscar && coincideEstado && coincideTipo;
+    var filtrados = datos.filter(function(d) {
+        var matchTexto  = d.unidad.toLowerCase().includes(texto);
+        var matchEstado = estado === "" || d.estado === estado;
+        var matchTipo   = tipo   === "" || d.tipo   === tipo;
+        return matchTexto && matchEstado && matchTipo;
     });
-
-    renderTabla(resultado);
+    renderTabla(filtrados);
 }
 
-renderTabla(datos);
+// =============================================
+// GRAFICOS CON CHART.JS
+// =============================================
+window.addEventListener("load", function() {
+
+    renderTabla(datos);
+
+    // Grafico 1: Evolucion anual
+    var ctxEv = document.getElementById("graficoEvolucion").getContext("2d");
+    new Chart(ctxEv, {
+        type: "bar",
+        data: {
+            labels: ["2021","2022","2023","2024","2025","2026"],
+            datasets: [{
+                label: "EOF aprobadas",
+                data: [1, 2, 3, 2, 1, 1],
+                backgroundColor: "#2d6a9f",
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+
+    // Grafico 2: Estado general (dona)
+    var ctxEst = document.getElementById("graficoEstado").getContext("2d");
+    new Chart(ctxEst, {
+        type: "doughnut",
+        data: {
+            labels: ["Aprobada CS","En tr\u00e1mite","En elaboraci\u00f3n"],
+            datasets: [{
+                data: [10, 1, 1],
+                backgroundColor: ["#28a745","#ffc107","#dc3545"],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: "bottom" }
+            }
+        }
+    });
+
+});
 </script>
 
 </body>
