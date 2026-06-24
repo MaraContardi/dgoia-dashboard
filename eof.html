@@ -3,797 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DGOIA - Estructuras Orgánico-Funcionales</title>
+    <title>EOF - Estructuras Org&aacute;nico Funcionales</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f4f8;
+            background: #f0f2f5;
             color: #333;
         }
-        .navbar {
+        header {
             background: linear-gradient(135deg, #1a3a5c, #2d6a9f);
             color: white;
-            padding: 14px 30px;
+            padding: 20px 40px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            flex-wrap: wrap;
-            gap: 10px;
+            gap: 20px;
         }
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .logo-unne-nav {
-            background: white;
-            border-radius: 8px;
-            padding: 4px 10px;
-            display: flex;
-            align-items: center;
-        }
-        .logo-unne-nav img {
-            height: 36px;
+        header img {
+            height: 70px;
             width: auto;
         }
-        .logo-unne-nav .logo-fallback {
-            font-size: 0.85em;
-            color: #1a3a5c;
-            font-weight: 700;
+        .titulo h1 { font-size: 1.3em; font-weight: 700; }
+        .titulo p { font-size: 0.9em; opacity: 0.85; margin-top: 4px; }
+        .nav-back {
+            background: #1a3a5c;
+            padding: 10px 40px;
         }
-        .navbar h1 {
-            font-size: 1.1em;
-            font-weight: 700;
-        }
-        .navbar p {
-            font-size: 0.8em;
-            opacity: 0.85;
-        }
-        .back-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.4);
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9em;
+        .nav-back a {
+            color: #7eb8f7;
             text-decoration: none;
-            transition: background 0.2s;
+            font-size: 0.9em;
         }
-        .back-btn:hover { background: rgba(255,255,255,0.35); }
-
-        .main { padding: 24px 30px; max-width: 1400px; margin: 0 auto; }
-
-        /* KPI Cards */
+        .nav-back a:hover { color: white; }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
         .kpi-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
         }
         .kpi-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 10px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            border-top: 4px solid var(--kpi-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-top: 4px solid #ccc;
         }
-        .kpi-number {
-            font-size: 2.4em;
-            font-weight: 800;
-            color: var(--kpi-color);
-            line-height: 1;
+        .kpi-card.verde { border-top-color: #28a745; }
+        .kpi-card.amarillo { border-top-color: #ffc107; }
+        .kpi-card.rojo { border-top-color: #dc3545; }
+        .kpi-card.azul { border-top-color: #2d6a9f; }
+        .kpi-numero {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #1a3a5c;
         }
         .kpi-label {
-            font-size: 0.82em;
+            font-size: 0.85em;
             color: #666;
-            margin-top: 6px;
-            line-height: 1.3;
+            margin-top: 5px;
         }
-        .kpi-sub {
-            font-size: 0.75em;
-            color: #999;
-            margin-top: 4px;
-        }
-
-        /* Filtros */
-        .filters-card {
+        .seccion {
             background: white;
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
-        .filters-card h3 {
-            font-size: 0.95em;
+        .seccion h2 {
             color: #1a3a5c;
-            margin-bottom: 14px;
-            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
         }
-        .filters-row {
+        .filtros {
             display: flex;
-            gap: 14px;
+            gap: 15px;
             flex-wrap: wrap;
-            align-items: flex-end;
+            margin-bottom: 20px;
         }
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            min-width: 180px;
-        }
-        .filter-group label {
-            font-size: 0.78em;
-            color: #555;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .filter-group select,
-        .filter-group input {
+        .filtros select, .filtros input {
             padding: 8px 12px;
             border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.88em;
-            background: #fafafa;
-            color: #333;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .filter-group select:focus,
-        .filter-group input:focus {
-            border-color: #2d6a9f;
-        }
-        .btn-reset {
-            padding: 8px 18px;
-            background: #e2e8f0;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.88em;
-            color: #555;
-            transition: background 0.2s;
-            height: 36px;
-        }
-        .btn-reset:hover { background: #cbd5e0; }
-
-        /* Tabla */
-        .table-card {
+            border-radius: 6px;
+            font-size: 0.9em;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            overflow: hidden;
-            margin-bottom: 24px;
         }
-        .table-header {
-            padding: 18px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .table-header h3 {
-            font-size: 1em;
-            color: #1a3a5c;
-            font-weight: 700;
-        }
-        .table-count {
-            font-size: 0.82em;
-            color: #888;
-        }
-        .table-wrapper { overflow-x: auto; }
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.88em;
         }
-        thead th {
-            background: #f8fafc;
-            padding: 12px 16px;
+        th {
+            background: #1a3a5c;
+            color: white;
+            padding: 10px 12px;
             text-align: left;
-            font-size: 0.78em;
-            font-weight: 700;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #eee;
-            white-space: nowrap;
+            font-weight: 600;
         }
-        tbody tr {
+        td {
+            padding: 10px 12px;
             border-bottom: 1px solid #f0f0f0;
-            transition: background 0.15s;
         }
-        tbody tr:hover { background: #f8fafc; }
-        tbody td {
-            padding: 13px 16px;
-            vertical-align: middle;
-        }
-        .ua-name {
-            font-weight: 600;
-            color: #1a3a5c;
-        }
-        .ua-sigla {
-            font-size: 0.78em;
-            color: #888;
-            display: block;
-        }
-
-        /* Badges de estado */
+        tr:hover { background: #f8f9fa; }
         .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 12px;
+            display: inline-block;
+            padding: 3px 10px;
             border-radius: 20px;
-            font-size: 0.78em;
+            font-size: 0.8em;
             font-weight: 600;
-            white-space: nowrap;
         }
-        .badge-aprobada    { background: #d4edda; color: #155724; }
-        .badge-tramite     { background: #fff3cd; color: #856404; }
-        .badge-elaboracion { background: #f8d7da; color: #721c24; }
-        .badge-revision    { background: #d1ecf1; color: #0c5460; }
-
+        .badge-verde { background: #d4edda; color: #155724; }
+        .badge-amarillo { background: #fff3cd; color: #856404; }
+        .badge-rojo { background: #f8d7da; color: #721c24; }
         .semaforo {
-            width: 14px; height: 14px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             display: inline-block;
+            margin-right: 6px;
+            vertical-align: middle;
         }
-        .sem-verde   { background: #27ae60; box-shadow: 0 0 6px #27ae60; }
-        .sem-amarillo{ background: #f39c12; box-shadow: 0 0 6px #f39c12; }
-        .sem-rojo    { background: #e74c3c; box-shadow: 0 0 6px #e74c3c; }
-
-        .res-link {
-            color: #2d6a9f;
-            text-decoration: none;
-            font-size: 0.85em;
-            font-weight: 500;
-        }
-        .res-link:hover { text-decoration: underline; }
-
-        /* Gráfico de barras simple */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-        @media (max-width: 768px) {
-            .charts-grid { grid-template-columns: 1fr; }
-            .main { padding: 16px; }
-        }
-        .chart-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px 24px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-        .chart-card h3 {
-            font-size: 0.95em;
-            color: #1a3a5c;
-            margin-bottom: 16px;
-            font-weight: 700;
-        }
-        .bar-item {
-            margin-bottom: 12px;
-        }
-        .bar-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.82em;
-            color: #555;
-            margin-bottom: 4px;
-        }
-        .bar-track {
-            background: #f0f0f0;
-            border-radius: 6px;
-            height: 10px;
-            overflow: hidden;
-        }
-        .bar-fill {
-            height: 100%;
-            border-radius: 6px;
-            transition: width 0.8s ease;
-        }
-
-        /* Pie chart simple con CSS */
-        .pie-container {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-        .pie-chart {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        .pie-legend {
-            flex: 1;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 0.85em;
-        }
-        .legend-dot {
-            width: 12px; height: 12px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .no-results {
+        .sem-verde { background: #28a745; }
+        .sem-amarillo { background: #ffc107; }
+        .sem-rojo { background: #dc3545; }
+        footer {
             text-align: center;
-            padding: 40px;
-            color: #999;
-            font-size: 0.95em;
-        }
-
-        .update-info {
-            text-align: right;
-            font-size: 0.78em;
-            color: #aaa;
-            padding: 0 4px 16px;
+            padding: 20px;
+            color: #888;
+            font-size: 0.85em;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-<nav class="navbar">
-    <div class="navbar-brand">
-        <div class="logo-unne-nav">
-            <img src="logo-unne.png" alt="Logo UNNE"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-            <span class="logo-fallback" style="display:none;">?? UNNE</span>
-        </div>
-        <div>
-            <h1>??? Estructuras Orgánico-Funcionales</h1>
-            <p>DGOIA — Dirección General de Organización e Innovación Administrativa</p>
-        </div>
+<header>
+    <img src="logo-unne.png" alt="Logo UNNE" onerror="this.style.display='none'">
+    <div class="titulo">
+        <h1>Estructuras Org&aacute;nico-Funcionales</h1>
+        <p>Direcci&oacute;n General de Organizaci&oacute;n e Innovaci&oacute;n Administrativa &mdash; UNNE</p>
     </div>
-    <a href="index.html" class="back-btn">? Volver al inicio</a>
-</nav>
+</header>
 
-<div class="main">
+<div class="nav-back">
+    <a href="index.html">&#8592; Volver al panel principal</a>
+</div>
 
-    <div class="update-info">?? Última actualización: junio 2025</div>
+<div class="container">
 
-    <!-- KPIs -->
-    <div class="kpi-grid" id="kpiGrid">
-        <div class="kpi-card" style="--kpi-color: #2d6a9f;">
-            <div class="kpi-number" id="kpiTotal">12</div>
-            <div class="kpi-label">Total Unidades Académicas</div>
+    <div class="kpi-grid">
+        <div class="kpi-card azul">
+            <div class="kpi-numero">12</div>
+            <div class="kpi-label">Total de unidades</div>
         </div>
-        <div class="kpi-card" style="--kpi-color: #27ae60;">
-            <div class="kpi-number" id="kpiAprobadas">10</div>
+        <div class="kpi-card verde">
+            <div class="kpi-numero">10</div>
             <div class="kpi-label">Aprobadas por CS</div>
-            <div class="kpi-sub" id="kpiAprobadasPct">83%</div>
         </div>
-        <div class="kpi-card" style="--kpi-color: #f39c12;">
-            <div class="kpi-number" id="kpiTramite">1</div>
-            <div class="kpi-label">En Trámite</div>
-            <div class="kpi-sub" id="kpiTramitePct">8%</div>
+        <div class="kpi-card amarillo">
+            <div class="kpi-numero">1</div>
+            <div class="kpi-label">En tr&aacute;mite</div>
         </div>
-        <div class="kpi-card" style="--kpi-color: #e74c3c;">
-            <div class="kpi-number" id="kpiElaboracion">1</div>
-            <div class="kpi-label">En Elaboración</div>
-            <div class="kpi-sub" id="kpiElaboracionPct">8%</div>
-        </div>
-        <div class="kpi-card" style="--kpi-color: #8e44ad;">
-            <div class="kpi-number" id="kpiResoluciones">2</div>
-            <div class="kpi-label">Resoluciones CS 2024</div>
-            <div class="kpi-sub">RES-406 · RES-483</div>
+        <div class="kpi-card rojo">
+            <div class="kpi-numero">1</div>
+            <div class="kpi-label">En elaboraci&oacute;n</div>
         </div>
     </div>
 
-    <!-- Gráficos -->
-    <div class="charts-grid">
-        <div class="chart-card">
-            <h3>?? Estado por Unidad Académica</h3>
-            <div id="barChart"></div>
-        </div>
-        <div class="chart-card">
-            <h3>?? Distribución General</h3>
-            <div class="pie-container">
-                <canvas class="pie-chart" id="pieChart"></canvas>
-                <div class="pie-legend">
-                    <div class="legend-item">
-                        <div class="legend-dot" style="background:#27ae60;"></div>
-                        <span>Aprobada por CS — <strong>10</strong></span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-dot" style="background:#f39c12;"></div>
-                        <span>En trámite — <strong>1</strong></span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-dot" style="background:#e74c3c;"></div>
-                        <span>En elaboración — <strong>1</strong></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="seccion">
+        <h2>Seguimiento por Unidad Acad&eacute;mica</h2>
 
-    <!-- Filtros -->
-    <div class="filters-card">
-        <h3>?? Filtros</h3>
-        <div class="filters-row">
-            <div class="filter-group">
-                <label>Estado</label>
-                <select id="filtroEstado" onchange="filtrar()">
-                    <option value="">Todos los estados</option>
-                    <option value="aprobada">Aprobada por CS</option>
-                    <option value="tramite">En trámite</option>
-                    <option value="elaboracion">En elaboración</option>
-                    <option value="revision">En revisión</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Año de resolución</label>
-                <select id="filtroAnio" onchange="filtrar()">
-                    <option value="">Todos los años</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Buscar unidad</label>
-                <input type="text" id="filtroBuscar"
-                       placeholder="Nombre o sigla..."
-                       oninput="filtrar()">
-            </div>
-            <button class="btn-reset" onclick="resetFiltros()">? Limpiar</button>
+        <div class="filtros">
+            <input type="text" id="buscar" 
+                placeholder="Buscar unidad..." 
+                onkeyup="filtrarTabla()">
+            <select id="filtroEstado" onchange="filtrarTabla()">
+                <option value="">Todos los estados</option>
+                <option value="Aprobada CS">Aprobada CS</option>
+                <option value="En tramite">En tr&aacute;mite</option>
+                <option value="En elaboracion">En elaboraci&oacute;n</option>
+            </select>
+            <select id="filtroTipo" onchange="filtrarTabla()">
+                <option value="">Todos los tipos</option>
+                <option value="Unidad Academica">Unidad Acad&eacute;mica</option>
+                <option value="Dependencia Central">Dependencia Central</option>
+            </select>
         </div>
-    </div>
 
-    <!-- Tabla -->
-    <div class="table-card">
-        <div class="table-header">
-            <h3>?? Detalle por Unidad Académica</h3>
-            <span class="table-count" id="tableCount">Mostrando 12 de 12 unidades</span>
-        </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Unidad Académica</th>
-                        <th>Estado EOF</th>
-                        <th>Semáforo</th>
-                        <th>Resolución CS</th>
-                        <th>Año</th>
-                        <th>Observaciones</th>
-                        <th>Documentación</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaBody"></tbody>
-            </table>
-            <div class="no-results" id="noResults" style="display:none;">
-                ?? No se encontraron resultados con los filtros aplicados.
-            </div>
-        </div>
+        <table id="tablaEOF">
+            <thead>
+                <tr>
+                    <th>Estado</th>
+                    <th>Unidad</th>
+                    <th>Tipo</th>
+                    <th>Resoluci&oacute;n CS</th>
+                    <th>Fecha</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTabla">
+            </tbody>
+        </table>
     </div>
 
 </div>
 
+<footer>
+    <p>DGOIA &mdash; UNNE &mdash; Sistema de monitoreo interno &mdash; 2025</p>
+</footer>
+
 <script>
-// ============================================================
-// DATOS — Editá aquí para actualizar la información
-// ============================================================
-const unidades = [
+var datos = [
     {
-        id: 1,
-        nombre: "Facultad de Ciencias Exactas y Naturales y Agrimensura",
-        sigla: "FaCENA",
-        estado: "aprobada",
-        resolucion: "RES-CS-2024-406",
-        anio: 2024,
-        observaciones: "Aprobada en sesión ordinaria",
-        pdf: ""
+        estado: "Aprobada CS",
+        unidad: "Facultad de Ciencias Exactas",
+        tipo: "Unidad Academica",
+        resolucion: "RES-2024-406",
+        fecha: "2024-08-15",
+        obs: "Aprobada sin observaciones"
     },
     {
-        id: 2,
-        nombre: "Facultad de Ciencias Agrarias",
-        sigla: "FCA",
-        estado: "aprobada",
-        resolucion: "RES-CS-2024-483",
-        anio: 2024,
-        observaciones: "Aprobada en sesión ordinaria",
-        pdf: ""
+        estado: "Aprobada CS",
+        unidad: "Facultad de Medicina",
+        tipo: "Unidad Academica",
+        resolucion: "RES-2024-483",
+        fecha: "2024-09-20",
+        obs: "Aprobada sin observaciones"
     },
     {
-        id: 3,
-        nombre: "Facultad de Arquitectura y Urbanismo",
-        sigla: "FAU",
-        estado: "aprobada",
-        resolucion: "RES-CS-2023-215",
-        anio: 2023,
-        observaciones: "Vigente",
-        pdf: ""
+        estado: "Aprobada CS",
+        unidad: "Facultad de Ingenier&iacute;a",
+        tipo: "Unidad Academica",
+        resolucion: "RES-2024-312",
+        fecha: "2024-07-10",
+        obs: "Aprobada sin observaciones"
     },
     {
-        id: 4,
-        nombre: "Facultad de Ciencias Económicas",
-        sigla: "FCE",
-        estado: "aprobada",
-        resolucion: "RES-CS-2023-318",
-        anio: 2023,
-        observaciones: "Vigente",
-        pdf: ""
+        estado: "Aprobada CS",
+        unidad: "Facultad de Humanidades",
+        tipo: "Unidad Academica",
+        resolucion: "RES-2024-290",
+        fecha: "2024-06-05",
+        obs: "Aprobada sin observaciones"
     },
     {
-        id: 5,
-        nombre: "Facultad de Derecho, Ciencias Sociales y Políticas",
-        sigla: "FD",
-        estado: "aprobada",
-        resolucion: "RES-CS-2023-401",
-        anio: 2023,
-        observaciones: "Vigente",
-        pdf: ""
+        estado: "Aprobada CS",
+        unidad: "Facultad de Derecho",
+        tipo: "Unidad Academica",
+        resolucion: "RES-2024-350",
+        fecha: "2024-07-22",
+        obs: "Aprobada sin observaciones"
     },
     {
-        id: 6,
-        nombre: "Facultad de Humanidades",
-        sigla: "FH",
-        estado: "aprobada",
-        resolucion: "RES-CS-2022-189",
-        anio: 2022,
-        observaciones: "Vigente",
-        pdf: ""
+        estado: "Aprobada CS",
+        unidad: "Facultad de Veterinaria",
+        tipo: "Unidad Academica",
+        resolucion: "RES-2024-401",
+        fecha: "2024-08-10",
+        obs: "Aprobada sin observaciones"
     },
     {
-        id: 7,
-        nombre: "Facultad de Ingeniería",
-        sigla: "FI",
-        estado: "aprobada",
-        resolucion: "RES-CS-2022-245",
-        anio: 2022,
-        observaciones: "Vigente",
-        pdf: ""
+        estado: "Aprobada CS",
+        unidad: "Facultad de Ciencias Agrarias",
+        tipo: "Unidad Academica",
+        resolucion: "RES-2024-420",
+        fecha: "2024-08-28",
+        obs: "Aprobada sin observaciones"
     },
     {
-        id: 8,
-        nombre: "Facultad de Medicina",
-        sigla: "FM",
-        estado: "aprobada",
-        resolucion: "RES-CS-2022-310",
-        anio: 2022,
-        observaciones: "Vigente",
-        pdf: ""
+        estado: "Aprobada CS",
+        unidad: "Facultad de Arquitectura",
+        tipo: "Unidad Academica",
+        resolucion: "RES-2024-455",
+        fecha: "2024-09-05",
+        obs: "Aprobada sin observaciones"
     },
     {
-        id: 9,
-        nombre: "Facultad de Odontología",
-        sigla: "FO",
-        estado: "aprobada",
-        resolucion: "RES-CS-2023-155",
-        anio: 2023,
-        observaciones: "Vigente",
-        pdf: ""
+        estado: "Aprobada CS",
+        unidad: "Facultad de Odontolog&iacute;a",
+        tipo: "Unidad Academica",
+        resolucion: "RES-2024-470",
+        fecha: "2024-09-12",
+        obs: "Aprobada sin observaciones"
     },
     {
-        id: 10,
-        nombre: "Facultad de Ciencias Veterinarias",
-        sigla: "FCV",
-        estado: "aprobada",
-        resolucion: "RES-CS-2023-280",
-        anio: 2023,
-        observaciones: "Vigente",
-        pdf: ""
+        estado: "Aprobada CS",
+        unidad: "Facultad de Ciencias Econ&oacute;micas",
+        tipo: "Unidad Academica",
+        resolucion: "RES-2024-490",
+        fecha: "2024-09-25",
+        obs: "Aprobada sin observaciones"
     },
     {
-        id: 11,
-        nombre: "Facultad de Artes, Diseño y Ciencias de la Cultura",
-        sigla: "FADyCC",
-        estado: "tramite",
-        resolucion: "—",
-        anio: 2024,
-        observaciones: "Expediente en Rectorado",
-        pdf: ""
+        estado: "En tramite",
+        unidad: "Facultad de Artes",
+        tipo: "Unidad Academica",
+        resolucion: "En tr&aacute;mite",
+        fecha: "2024-10-01",
+        obs: "Expediente ingresado, pendiente dictamen"
     },
     {
-        id: 12,
-        nombre: "Instituto de Nivel Terciario",
-        sigla: "INT",
-        estado: "elaboracion",
-        resolucion: "—",
-        anio: null,
-        observaciones: "En proceso de elaboración interna",
-        pdf: ""
+        estado: "En elaboracion",
+        unidad: "Rectorado",
+        tipo: "Dependencia Central",
+        resolucion: "-",
+        fecha: "-",
+        obs: "En proceso de relevamiento"
     }
 ];
 
-// ============================================================
-// CONFIGURACIÓN DE ESTADOS
-// ============================================================
-const estadoConfig = {
-    aprobada:    { label: "Aprobada por CS",  badge: "badge-aprobada",    semaforo: "sem-verde",    emoji: "?" },
-    tramite:     { label: "En trámite",       badge: "badge-tramite",     semaforo: "sem-amarillo", emoji: "??" },
-    elaboracion: { label: "En elaboración",   badge: "badge-elaboracion", semaforo: "sem-rojo",     emoji: "??" },
-    revision:    { label: "En revisión",      badge: "badge-revision",    semaforo: "sem-amarillo", emoji: "??" }
-};
-
-// ============================================================
-// RENDERIZAR TABLA
-// ============================================================
-function renderTabla(datos) {
-    const tbody = document.getElementById('tablaBody');
-    const noResults = document.getElementById('noResults');
-    const tableCount = document.getElementById('tableCount');
-
-    tbody.innerHTML = '';
-
-    if (datos.length === 0) {
-        noResults.style.display = 'block';
-        tableCount.textContent = 'Sin resultados';
-        return;
+function getBadge(estado) {
+    if (estado === "Aprobada CS") {
+        return '<span class="semaforo sem-verde"></span>'
+             + '<span class="badge badge-verde">Aprobada CS</span>';
     }
-
-    noResults.style.display = 'none';
-    tableCount.textContent = `Mostrando ${datos.length} de ${unidades.length} unidades`;
-
-    datos.forEach((u, idx) => {
-        const cfg = estadoConfig[u.estado] || estadoConfig['elaboracion'];
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td style="color:#aaa;font-size:0.85em;">${idx + 1}</td>
-            <td>
-                <span class="ua-name">${u.nombre}</span>
-                <span class="ua-sigla">${u.sigla}</span>
-            </td>
-            <td>
-                <span class="badge ${cfg.badge}">
-                    ${cfg.emoji} ${cfg.label}
-                </span>
-            </td>
-            <td style="text-align:center;">
-                <span class="semaforo ${cfg.semaforo}"></span>
-            </td>
-            <td>
-                ${u.resolucion !== '—'
-                    ? `<span class="res-link">${u.resolucion}</span>`
-                    : `<span style="color:#ccc;">—</span>`}
-            </td>
-            <td style="color:#666;">${u.anio || '—'}</td>
-            <td style="color:#666;font-size:0.85em;">${u.observaciones}</td>
-            <td>
-                ${u.pdf
-                    ? `<a href="${u.pdf}" target="_blank" class="res-link">?? Ver PDF</a>`
-                    : `<span style="color:#ddd;font-size:0.82em;">Sin archivo</span>`}
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
+    if (estado === "En tramite") {
+        return '<span class="semaforo sem-amarillo"></span>'
+             + '<span class="badge badge-amarillo">En tr&aacute;mite</span>';
+    }
+    if (estado === "En elaboracion") {
+        return '<span class="semaforo sem-rojo"></span>'
+             + '<span class="badge badge-rojo">En elaboraci&oacute;n</span>';
+    }
+    return estado;
 }
 
-// ============================================================
-// FILTROS
-// ============================================================
-function filtrar() {
-    const estado  = document.getElementById('filtroEstado').value;
-    const anio    = document.getElementById('filtroAnio').value;
-    const buscar  = document.getElementById('filtroBuscar').value.toLowerCase();
+function renderTabla(filas) {
+    var tbody = document.getElementById("cuerpoTabla");
+    tbody.innerHTML = "";
+    for (var i = 0; i < filas.length; i++) {
+        var f = filas[i];
+        var fila = "<tr>";
+        fila += "<td>" + getBadge(f.estado) + "</td>";
+        fila += "<td>" + f.unidad + "</td>";
+        fila += "<td>" + f.tipo + "</td>";
+        fila += "<td>" + f.resolucion + "</td>";
+        fila += "<td>" + f.fecha + "</td>";
+        fila += "<td>" + f.obs + "</td>";
+        fila += "</tr>";
+        tbody.innerHTML += fila;
+    }
+}
 
-    const resultado = unidades.filter(u => {
-        const matchEstado = !estado || u.estado === estado;
-        const matchAnio   = !anio   || String(u.anio) === anio;
-        const matchBuscar = !buscar ||
-            u.nombre.toLowerCase().includes(buscar) ||
-            u.sigla.toLowerCase().includes(buscar);
-        return matchEstado && matchAnio && matchBuscar;
+function filtrarTabla() {
+    var buscar = document.getElementById("buscar").value.toLowerCase();
+    var estado = document.getElementById("filtroEstado").value;
+    var tipo = document.getElementById("filtroTipo").value;
+
+    var resultado = datos.filter(function(f) {
+        var coincideBuscar = f.unidad.toLowerCase().indexOf(buscar) > -1;
+        var coincideEstado = estado === "" || f.estado === estado;
+        var coincideTipo = tipo === "" || f.tipo === tipo;
+        return coincideBuscar && coincideEstado && coincideTipo;
     });
 
     renderTabla(resultado);
 }
 
-function resetFiltros() {
-    document.getElementById('filtroEstado').value = '';
-    document.getElementById('filtroAnio').value   = '';
-    document.getElementById('filtroBuscar').value = '';
-    renderTabla(unidades);
-}
-
-// ============================================================
-// GRÁFICO DE BARRAS
-// ============================================================
-function renderBarras() {
-    const container = document.getElementById('barChart');
-    const colores = {
-        aprobada:    '#27ae60',
-        tramite:     '#f39c12',
-        elaboracion: '#e74c3c',
-        revision:    '#3498db'
-    };
-
-    // Mostrar solo las primeras 8 para no saturar
-    const muestra = unidades.slice(0, 8);
-
-    container.innerHTML = muestra.map(u => `
-        <div class="bar-item">
-            <div class="bar-label">
-                <span>${u.sigla}</span>
-                <span style="color:${colores[u.estado]};font-weight:600;">
-                    ${estadoConfig[u.estado]?.emoji || ''}
-                </span>
-            </div>
-            <div class="bar-track">
-                <div class="bar-fill" style="
-                    width: ${u.estado === 'aprobada' ? 100 : u.estado === 'tramite' ? 55 : 25}%;
-                    background: ${colores[u.estado]};
-                "></div>
-            </div>
-        </div>
-    `).join('');
-}
-
-// ============================================================
-// GRÁFICO PIE (Canvas)
-// ============================================================
-function renderPie() {
-    const canvas = document.getElementById('pieChart');
-    const ctx = canvas.getContext('2d');
-    const total = unidades.length;
-
-    const grupos = {
-        aprobada:    { count: 0, color: '#27ae60' },
-        tramite:     { count: 0, color: '#f39c12' },
-        elaboracion: { count: 0, color: '#e74c3c' },
-        revision:    { count: 0, color: '#3498db' }
-    };
-
-    unidades.forEach(u => {
-        if (grupos[u.estado]) grupos[u.estado].count++;
-    });
-
-    canvas.width  = 120;
-    canvas.height = 120;
-
-    let startAngle = -Math.PI / 2;
-    const cx = 60, cy = 60, r = 55;
-
-    Object.values(grupos).forEach(g => {
-        if (g.count === 0) return;
-        const slice = (g.count / total) * 2 * Math.PI;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.arc(cx, cy, r, startAngle, startAngle + slice);
-        ctx.closePath();
-        ctx.fillStyle = g.color;
-        ctx.fill();
-        startAngle += slice;
-    });
-
-    // Círculo interior (donut)
-    ctx.beginPath();
-    ctx.arc(cx, cy, 28, 0, 2 * Math.PI);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-
-    // Número central
-    ctx.fillStyle = '#1a3a5c';
-    ctx.font = 'bold 18px Segoe UI';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(total, cx, cy);
-}
-
-// ============================================================
-// INICIALIZAR
-// ============================================================
-document.addEventListener('DOMContentLoaded', () => {
-    renderTabla(unidades);
-    renderBarras();
-    renderPie();
-});
+renderTabla(datos);
 </script>
 
 </body>
