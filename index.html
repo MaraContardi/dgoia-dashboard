@@ -1,183 +1,223 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DGOIA - Dashboard de Gestión</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
-            color: #333;
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
         }
-        header {
-            background: linear-gradient(135deg, #1a3a5c, #2d6a9f);
-            color: white;
-            padding: 20px 40px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        header img {
-            height: 70px;
-            width: auto;
-        }
-        header .titulo {
-            display: flex;
-            flex-direction: column;
-        }
-        header .titulo h1 {
-            font-size: 1.4em;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        header .titulo p {
-            font-size: 0.95em;
-            opacity: 0.85;
-            margin-top: 4px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .bienvenida {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-left: 5px solid #2d6a9f;
-        }
-        .bienvenida h2 {
-            color: #1a3a5c;
-            font-size: 1.3em;
-            margin-bottom: 10px;
-        }
-        .bienvenida p {
-            color: #555;
-            line-height: 1.6;
-        }
-        .modulos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .modulo-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            text-decoration: none;
-            color: #333;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            border-top: 4px solid #2d6a9f;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .modulo-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-        .modulo-card .icono {
-            font-size: 2.2em;
-        }
-        .modulo-card h3 {
-            font-size: 1.1em;
-            color: #1a3a5c;
-        }
-        .modulo-card p {
-            font-size: 0.88em;
-            color: #666;
-            line-height: 1.5;
-        }
-        .modulo-card .estado {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.78em;
-            font-weight: 600;
-            margin-top: 5px;
-            width: fit-content;
-        }
-        .activo { background: #d4edda; color: #155724; }
-        .proximo { background: #fff3cd; color: #856404; }
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #888;
-            font-size: 0.85em;
-            margin-top: 40px;
-        }
-    </style>
+
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f2f5;
+        color: #333;
+    }
+
+    header {
+        background: linear-gradient(135deg, #1a3a5c, #2d6a9f);
+        color: white;
+        padding: 20px 40px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    header img {
+        height: 70px;
+        width: auto;
+    }
+
+    header .titulo {
+        display: flex;
+        flex-direction: column;
+    }
+
+    header .titulo h1 {
+        font-size: 1.4em;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    header .titulo p {
+        font-size: 0.95em;
+        opacity: 0.85;
+        margin-top: 4px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .bienvenida {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        border-left: 5px solid #2d6a9f;
+    }
+
+    .bienvenida h2 {
+        color: #1a3a5c;
+        font-size: 1.3em;
+        margin-bottom: 10px;
+    }
+
+    .bienvenida p {
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .modulos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .modulo-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        text-decoration: none;
+        color: #333;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border-top: 4px solid #2d6a9f;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .modulo-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .modulo-card .icono {
+        font-size: 2.2em;
+    }
+
+    .modulo-card h3 {
+        font-size: 1.1em;
+        color: #1a3a5c;
+    }
+
+    .modulo-card p {
+        font-size: 0.88em;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .modulo-card .estado {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.78em;
+        font-weight: 600;
+        margin-top: 5px;
+        width: fit-content;
+    }
+
+    .activo { 
+        background: #d4edda; 
+        color: #155724; 
+    }
+
+    .proximo { 
+        background: #fff3cd; 
+        color: #856404; 
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        color: #888;
+        font-size: 0.85em;
+        margin-top: 40px;
+    }
+</style>
+```
+
 </head>
+
 <body>
 
 <header>
     <img src="logo-unne.png" alt="Logo UNNE" onerror="this.style.display='none'">
     <div class="titulo">
-        <h1>Direccion General de Organizacion e Innovacion Administrativa</h1>
-        <p>Universidad Nacional del Nordeste &mdash; Dashboard de Gestion</p>
+        <h1>Dirección General de Organización e Innovación Administrativa</h1>
+        <p>Universidad Nacional del Nordeste &mdash; Dashboard de Gestión</p>
     </div>
 </header>
 
 <div class="container">
 
-    <div class="bienvenida">
-        <h2>&#128075; Bienvenida al sistema de monitoreo DGOIA</h2>
-        <p>Este panel centraliza el seguimiento de las principales funciones de la Direccion General: 
-        estructuras organizativas, manuales de procedimientos, planta nodocente, planificacion estrategica 
-        y coordinacion interareas.</p>
-    </div>
+```
+<div class="bienvenida">
+    <h2>&#128075; Bienvenida al sistema de monitoreo DGOIA</h2>
+    <p>
+        Este panel centraliza el seguimiento de las principales funciones de la Dirección General:
+        estructuras organizativas, manuales de procedimientos, planta nodocente, planificación estratégica
+        y coordinación interáreas.
+    </p>
+</div>
 
-    <div class="modulos">
+<div class="modulos">
 
-        <a href="eof.html" class="modulo-card">
-            <div class="icono">&#127963;</div>
-            <h3>Estructuras Organico-Funcionales</h3>
-            <p>Seguimiento del estado de aprobacion de EOF por unidad academica y dependencia central.</p>
-            <span class="estado activo">&#9679; Activo</span>
-        </a>
+    <a href="eof.html" class="modulo-card">
+        <div class="icono">&#127963;</div>
+        <h3>Estructuras Orgánico-Funcionales</h3>
+        <p>Seguimiento del estado de aprobación de EOF por unidad académica y dependencia central.</p>
+        <span class="estado activo">&#9679; Activo</span>
+    </a>
 
-        <a href="#" class="modulo-card">
-            <div class="icono">&#128214;</div>
-            <h3>Manuales de Procedimientos</h3>
-            <p>Control de elaboracion, revision y aprobacion de manuales institucionales.</p>
-            <span class="estado proximo">&#9679; Proximo</span>
-        </a>
+    <a href="#" class="modulo-card">
+        <div class="icono">&#128214;</div>
+        <h3>Manuales de Procedimientos</h3>
+        <p>Control de elaboración, revisión y aprobación de manuales institucionales.</p>
+        <span class="estado proximo">&#9679; Próximo</span>
+    </a>
 
-        <a href="#" class="modulo-card">
-            <div class="icono">&#128101;</div>
-            <h3>Planta Nodocente</h3>
-            <p>Monitoreo de cargos, vacantes, concursos y movimientos del personal nodocente.</p>
-            <span class="estado proximo">&#9679; Proximo</span>
-        </a>
+    <a href="plantanodocente.html" class="modulo-card">
+        <div class="icono">&#128101;</div>
+        <h3>Planta Nodocente</h3>
+        <p>Monitoreo de cargos, vacantes, concursos y movimientos del personal nodocente.</p>
+        <span class="estado activo">&#9679; Activo</span>
+    </a>
 
-        <a href="#" class="modulo-card">
-            <div class="icono">&#127919;</div>
-            <h3>Planificacion Estrategica</h3>
-            <p>Seguimiento de objetivos, metas e indicadores del plan de gestion.</p>
-            <span class="estado proximo">&#9679; Proximo</span>
-        </a>
+    <a href="#" class="modulo-card">
+        <div class="icono">&#127919;</div>
+        <h3>Planificación Estratégica</h3>
+        <p>Seguimiento de objetivos, metas e indicadores del plan de gestión.</p>
+        <span class="estado proximo">&#9679; Próximo</span>
+    </a>
 
-        <a href="#" class="modulo-card">
-            <div class="icono">&#129309;</div>
-            <h3>Coordinacion Interareas</h3>
-            <p>Registro de reuniones, acuerdos y acciones conjuntas con otras dependencias.</p>
-            <span class="estado proximo">&#9679; Proximo</span>
-        </a>
+    <a href="#" class="modulo-card">
+        <div class="icono">&#129309;</div>
+        <h3>Coordinación Interáreas</h3>
+        <p>Registro de reuniones, acuerdos y acciones conjuntas con otras dependencias.</p>
+        <span class="estado proximo">&#9679; Próximo</span>
+    </a>
 
-        <a href="#" class="modulo-card">
-            <div class="icono">&#128200;</div>
-            <h3>Indicadores Generales</h3>
-            <p>Panel de KPIs consolidados de todas las areas bajo supervision.</p>
-            <span class="estado proximo">&#9679; Proximo</span>
-        </a>
+    <a href="#" class="modulo-card">
+        <div class="icono">&#128200;</div>
+        <h3>Indicadores Generales</h3>
+        <p>Panel de KPIs consolidados de todas las áreas bajo supervisión.</p>
+        <span class="estado proximo">&#9679; Próximo</span>
+    </a>
 
-    </div>
+</div>
+```
+
 </div>
 
 <footer>
@@ -186,9 +226,3 @@
 
 </body>
 </html>
-<a href="plantanodocente.html" class="card">
-  <div class="icon">👥</div>
-  <h3>Planta Nodocente</h3>
-  <p>Monitoreo de cargos, vacantes, concursos y movimientos del personal nodocente.</p>
-  <span class="badge activo">Activo</span>
-</a>
