@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGOIA - Coordinación Interáreas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: #f0f4f8;
+    color: #333;
+  }
+
+  header {
+    background: linear-gradient(135deg, #1a3a6b, #2e6da4);
+    color: white;
+    padding: 32px 40px;
+    text-align: center;
+  }
+
+  header h1 {
+    font-size: 2em;
+    letter-spacing: 0.5px;
+    font-weight: 900;
+  }
+
+  header p {
+    font-size: 1em;
+    opacity: 0.9;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 1250px;
+    margin: 30px auto;
+    padding: 0 20px;
+  }
+
+  .volver {
+    display: inline-block;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #1a3a6b;
+    font-weight: 700;
+  }
+
+  .volver:hover {
+    text-decoration: underline;
+  }
+
+  .section {
+    background: white;
+    border-radius: 14px;
+    padding: 30px;
+    margin-bottom: 35px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+
+  .section h2 {
+    font-size: 1.3em;
+    color: #1a3a6b;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e8f0fe;
+    font-weight: 900;
+  }
+
+  .section p {
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .nota {
+    background: #e8f0fe;
+    color: #1a3a6b;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    font-size: 0.92em;
+    line-height: 1.5;
+  }
+
+  .charts-row {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+
+  .chart-box {
+    flex: 1;
+    min-width: 300px;
+  }
+
+  .chart-box h3 {
+    text-align: center;
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+    background: #e8f0fe;
+    color: #1a3a6b;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    font-size: 0.8em;
+  }
+
+  @media (max-width: 700px) {
+    header h1 {
+      font-size: 1.5em;
+    }
+
+    .section {
+      padding: 22px;
+    }
+
+    .card .number {
+      font-size: 2em;
+    }
+  }
+</style>
+
+</head>
+
+<body>
+
+<header>
+  <h1>🤝 Coordinación Interáreas</h1>
+  <p>
+    Universidad Nacional del Nordeste — Dirección General de Organización e Innovación Administrativa<br>
+    Lectura gerencial de reuniones, acuerdos y acciones conjuntas — Abril a junio 2026
+  </p>
+</header>
+
+<div class="container">
+
+<a href="index.html" class="volver">← Volver al dashboard principal</a>
+
+  <div class="nota">
+    Este tablero muestra una versión gerencial y depurada del registro de coordinación interáreas.
+    Se omiten nombres propios, situaciones personales y detalles sensibles, conservando únicamente indicadores, tendencias y gráficos de síntesis.
+  </div>
+
+  <!-- GRÁFICOS -->
+
+  <div class="section">
+    <h2>📈 Lectura general de la coordinación</h2>
+
+<div class="charts-row">
+  <div class="chart-box">
+    <h3>Reuniones por mes</h3>
+    <canvas id="chartMes" height="230"></canvas>
+  </div>
+
+  <div class="chart-box">
+    <h3>Reuniones por línea de trabajo</h3>
+    <canvas id="chartLinea" height="230"></canvas>
+  </div>
+</div>
+
+  </div>
+
+  <div class="section">
+    <h2>🏛️ Áreas con mayor articulación</h2>
+
+<div class="charts-row">
+  <div class="chart-box">
+    <h3>Top áreas / dependencias</h3>
+    <canvas id="chartArea" height="300"></canvas>
+  </div>
+</div>
+
+  </div>
+</div>
+
+<footer>
+  DGOIA — UNNE · Coordinación Interáreas · Abril a junio 2026
+</footer>
+
+<script>
+const reuniones = [
+  {
+    fecha: "08/04/2026",
+    area: "Secretaría General Administrativa",
+    linea: "Procedimientos administrativos",
+    tema: "Casa Agroindustrias ERAGIA",
+    resultado: "Seguimiento de reunión previa, revisión de necesidades administrativas y situación institucional vinculada al funcionamiento de Casa Agroindustrias.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S1"
+  },
+  {
+    fecha: "07/04/2026",
+    area: "Casa Agroindustrias",
+    linea: "Procedimientos administrativos",
+    tema: "Procedimientos varios",
+    resultado: "Preparación de registros vinculados al proceso de mantenimiento.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S1"
+  },
+  {
+    fecha: "09/04/2026",
+    area: "Casa Agroindustrias",
+    linea: "Procedimientos administrativos",
+    tema: "Procedimientos varios",
+    resultado: "Revisión de registros de mantenimiento y relevamiento de necesidades de personal por sectores.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S1"
+  },
+  {
+    fecha: "06/04/2026",
+    area: "DGITI",
+    linea: "SGC UNNE",
+    tema: "Seguimiento del Sistema de Gestión de Calidad",
+    resultado: "Se acordó la remisión de informe de seguimiento para Revisión por la Dirección.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S1"
+  },
+  {
+    fecha: "14/04/2026",
+    area: "Casa Agroindustrias",
+    linea: "Procedimientos administrativos",
+    tema: "Procedimientos varios",
+    resultado: "Entrevista con responsables de procesos y mantenimiento. Presentación inicial de elementos documentales elaborados.",
+    estado: "Realizado",
+    periodo: "2026-04-S2"
+  },
+  {
+    fecha: "16/04/2026",
+    area: "Facultad de Ciencias Económicas",
+    linea: "Procedimientos administrativos",
+    tema: "Procedimiento de Recursos Propios",
+    resultado: "Se acordó realizar revisión final por correo institucional.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S2"
+  },
+  {
+    fecha: "15/04/2026",
+    area: "DGITI / Diplomas",
+    linea: "SGC UNNE",
+    tema: "PE 8.01 Emisión de diplomas",
+    resultado: "Revisión de reportes y necesidades del Departamento Diplomas para adecuación de registros y sistemas.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S2"
+  },
+  {
+    fecha: "15/04/2026",
+    area: "Secretaría General Académica",
+    linea: "SGC UNNE",
+    tema: "PE 8.01 Emisión de diplomas",
+    resultado: "Revisión de reportes y necesidades vinculadas al proceso de emisión de diplomas.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S2"
+  },
+  {
+    fecha: "14/04/2026",
+    area: "Rectorado",
+    linea: "Procedimientos administrativos",
+    tema: "Casa Agroindustrias ERAGIA",
+    resultado: "Coordinación institucional sobre funcionamiento y necesidades de Casa Agroindustrias.",
+    estado: "Realizado",
+    periodo: "2026-04-S2"
+  },
+  {
+    fecha: "16/04/2026",
+    area: "Parque Tecnológico Corrientes",
+    linea: "Diseño organizacional",
+    tema: "EOF y procedimientos",
+    resultado: "Presentación institucional y solicitud de análisis de estructura orgánico-funcional y procedimientos.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S2"
+  },
+  {
+    fecha: "15/04/2026",
+    area: "Secretaría General Administrativa",
+    linea: "Procedimientos administrativos",
+    tema: "Casa Agroindustrias ERAGIA",
+    resultado: "Relevamiento de necesidades de recursos vinculadas a la gerencia de Casa Agroindustrias.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S2"
+  },
+  {
+    fecha: "21/04/2026",
+    area: "DGGDTH",
+    linea: "SGC UNNE",
+    tema: "Capacitación / taller",
+    resultado: "Coordinación de taller vinculado con procesos académicos del SGC.",
+    estado: "Realizado",
+    periodo: "2026-04-S3"
+  },
+  {
+    fecha: "24/04/2026",
+    area: "Dirección Administrativa / Diplomas / DGITI",
+    linea: "SGC UNNE",
+    tema: "PE 8.01 Emisión de diplomas",
+    resultado: "Seguimiento de requerimientos del Departamento Diplomas. Se prevé personalización SIU Guaraní, reversionado del PE 8.01 y formalización de procedimiento VHA.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S3"
+  },
+  {
+    fecha: "22/04/2026",
+    area: "Parque Tecnológico Corrientes",
+    linea: "Diseño organizacional",
+    tema: "EOF y Manual de Misiones y Funciones",
+    resultado: "Revisión inicial de estructura orgánico-funcional y manual de misiones y funciones.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S3"
+  },
+  {
+    fecha: "22/04/2026",
+    area: "Parque Tecnológico Corrientes",
+    linea: "Digitalización",
+    tema: "Sistema de gestión documental",
+    resultado: "Revisión de proyecto de sistema y referencia a modelos de portales administrativos.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S3"
+  },
+  {
+    fecha: "22/04/2026",
+    area: "Secretaría General Legal y Técnica",
+    linea: "Expedientes y actuaciones",
+    tema: "Seguimiento de actuaciones administrativas",
+    resultado: "Coordinación sobre actuaciones vinculadas a movilidad y recursos institucionales.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S3"
+  },
+  {
+    fecha: "21/04/2026",
+    area: "Secretaría General de Planeamiento",
+    linea: "Planificación y expedientes",
+    tema: "Expedientes varios",
+    resultado: "Seguimiento de expedientes vinculados a unidades académicas.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S3"
+  },
+  {
+    fecha: "29/04/2026",
+    area: "Casa Agroindustrias",
+    linea: "Procedimientos administrativos",
+    tema: "Costos y procesos productivos",
+    resultado: "Priorización de procesos específicos de producción y apoyo para relevamiento de costos.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S4"
+  },
+  {
+    fecha: "30/04/2026",
+    area: "Casa Agroindustrias",
+    linea: "Procedimientos administrativos",
+    tema: "Visita de planta",
+    resultado: "Visita con autoridades y áreas técnicas para revisión de procesos operativos, contables e informáticos.",
+    estado: "Realizado",
+    periodo: "2026-04-S4"
+  },
+  {
+    fecha: "29/04/2026",
+    area: "Facultad de Artes",
+    linea: "Diseño organizacional",
+    tema: "EOF y Manual de Misiones y Funciones",
+    resultado: "Trabajo sobre proyecto de estructura y manual de funciones.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S4"
+  },
+  {
+    fecha: "29/04/2026",
+    area: "Unidades académicas",
+    linea: "SGC UNNE",
+    tema: "Registros RG 6.01.01 y RG 9.01.02",
+    resultado: "Revisión documental con áreas de diplomas de unidades académicas.",
+    estado: "En seguimiento",
+    periodo: "2026-04-S4"
+  },
+  {
+    fecha: "27/04/2026",
+    area: "ISSUNNE",
+    linea: "Diseño organizacional",
+    tema: "EOF y Manual de Misiones y Funciones",
+    resultado: "Entrega de informe sobre proyecto presentado y recepción institucional favorable.",
+    estado: "Cerrado",
+    periodo: "2026-04-S4"
+  },
+  {
+    fecha: "04/05/2026",
+    area: "Facultad de Ciencias Agrarias",
+    linea: "SGC UNNE",
+    tema: "Visita de seguimiento",
+    resultado: "Relevamiento de observaciones vinculadas al circuito de pagos.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S1"
+  },
+  {
+    fecha: "04/05/2026",
+    area: "Facultad de Ciencias Veterinarias",
+    linea: "SGC UNNE",
+    tema: "Visita de seguimiento",
+    resultado: "Visita de seguimiento del proceso alcanzado por el SGC.",
+    estado: "Realizado",
+    periodo: "2026-05-S1"
+  },
+  {
+    fecha: "04/05/2026",
+    area: "Instituto de Ciencias Criminalísticas",
+    linea: "SGC UNNE",
+    tema: "Visita de seguimiento",
+    resultado: "Visita de seguimiento del proceso alcanzado por el SGC.",
+    estado: "Realizado",
+    periodo: "2026-05-S1"
+  },
+  {
+    fecha: "04/05/2026",
+    area: "Facultad de Derecho",
+    linea: "SGC UNNE",
+    tema: "Visita de seguimiento",
+    resultado: "Se relevaron observaciones sobre comunicaciones automáticas al egresado en caso de anulación.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S1"
+  },
+  {
+    fecha: "04/05/2026",
+    area: "FACENA",
+    linea: "SGC UNNE",
+    tema: "Visita de seguimiento",
+    resultado: "Se relevaron observaciones vinculadas a carga de planes y registros académicos.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S1"
+  },
+  {
+    fecha: "04/05/2026",
+    area: "Facultad de Odontología",
+    linea: "SGC UNNE",
+    tema: "Visita de seguimiento",
+    resultado: "Se relevaron observaciones sobre tiempos de tratamiento de equivalencias vinculadas a nuevo plan.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S1"
+  },
+  {
+    fecha: "05/05/2026",
+    area: "Facultad de Medicina",
+    linea: "SGC UNNE",
+    tema: "Visita de seguimiento",
+    resultado: "Visita de seguimiento del proceso alcanzado por el SGC.",
+    estado: "Realizado",
+    periodo: "2026-05-S1"
+  },
+  {
+    fecha: "06/05/2026",
+    area: "Facultad de Artes",
+    linea: "SGC UNNE",
+    tema: "Visita de seguimiento",
+    resultado: "Visita de seguimiento del proceso alcanzado por el SGC.",
+    estado: "Realizado",
+    periodo: "2026-05-S1"
+  },
+  {
+    fecha: "06/05/2026",
+    area: "Facultad de Humanidades",
+    linea: "SGC UNNE",
+    tema: "Visita de seguimiento",
+    resultado: "Reunión con nuevas autoridades y seguimiento de procesos vinculados al SGC.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S1"
+  },
+  {
+    fecha: "11/05/2026",
+    area: "Otros",
+    linea: "Convenios / coordinación externa",
+    tema: "Documentación de trabajo",
+    resultado: "Se compartió documentación de trabajo para diagnóstico institucional.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S2"
+  },
+  {
+    fecha: "13/05/2026",
+    area: "Otros",
+    linea: "Convenios / coordinación externa",
+    tema: "Reunión de seguimiento",
+    resultado: "Seguimiento de actividades vinculadas al convenio y diagnóstico institucional.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S2"
+  },
+  {
+    fecha: "14/05/2026",
+    area: "Casa Agroindustrias",
+    linea: "Procedimientos administrativos",
+    tema: "Revisión de procedimientos",
+    resultado: "Revisión de procedimientos operativos en elaboración.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S2"
+  },
+  {
+    fecha: "14/05/2026",
+    area: "Otros",
+    linea: "Convenios / coordinación externa",
+    tema: "Diagnóstico y relevamiento",
+    resultado: "Revisión de formulario para etapa de planificación, diagnóstico y relevamiento.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S2"
+  },
+  {
+    fecha: "15/05/2026",
+    area: "SGC UNNE",
+    linea: "SGC UNNE",
+    tema: "Reunión virtual",
+    resultado: "Reunión virtual de seguimiento del Sistema de Gestión de Calidad.",
+    estado: "Realizado",
+    periodo: "2026-05-S2"
+  },
+  {
+    fecha: "26/05/2026",
+    area: "Facultad de Ciencias Agrarias",
+    linea: "Digitalización",
+    tema: "Instalación de escáner",
+    resultado: "Inicio de actividades de digitalización mediante instalación de escáner.",
+    estado: "Realizado",
+    periodo: "2026-05-S4"
+  },
+  {
+    fecha: "20/05/2026",
+    area: "Casa Agroindustrias",
+    linea: "Procedimientos administrativos",
+    tema: "Procesos productivos",
+    resultado: "Revisión de recetas y procedimientos específicos de producción.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S3"
+  },
+  {
+    fecha: "20/05/2026",
+    area: "Parque Tecnológico Corrientes",
+    linea: "Digitalización",
+    tema: "Sistema de gestión documental",
+    resultado: "Parametrización de sistema de gestión documental.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S3"
+  },
+  {
+    fecha: "20/05/2026",
+    area: "Parque Tecnológico Corrientes",
+    linea: "Digitalización",
+    tema: "Sistemas de gestión",
+    resultado: "Presentación de sistema de gestión documental y sistema de gestión de proyectos.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S3"
+  },
+  {
+    fecha: "21/05/2026",
+    area: "Casa Agroindustrias",
+    linea: "Procedimientos administrativos",
+    tema: "Procedimiento de elaboración de quesos",
+    resultado: "Revisión de procedimiento específico de producción.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S3"
+  },
+  {
+    fecha: "27/05/2026",
+    area: "Otros",
+    linea: "Convenios / coordinación externa",
+    tema: "Formularios de diagnóstico",
+    resultado: "Presentación de formularios de diagnóstico institucional para su revisión.",
+    estado: "En seguimiento",
+    periodo: "2026-05-S4"
+  },
+  {
+    fecha: "01/06/2026",
+    area: "Secretaría General Académica",
+    linea: "SGC UNNE",
+    tema: "Comité SGC",
+    resultado: "Reunión con presidencia del Comité del SGC para definiciones varias.",
+    estado: "En seguimiento",
+    periodo: "2026-06-S1"
+  },
+  {
+    fecha: "02/06/2026",
+    area: "Diplomas Rectorado",
+    linea: "SGC UNNE",
+    tema: "PE 8.01 Emisión de diplomas",
+    resultado: "Informe sobre requerimientos varios y agenda de visitas a unidades académicas.",
+    estado: "En seguimiento",
+    periodo: "2026-06-S1"
+  },
+  {
+    fecha: "03/06/2026",
+    area: "Otros",
+    linea: "Convenios / coordinación externa",
+    tema: "Primera etapa de diagnóstico",
+    resultado: "Reunión inicial de diagnóstico. Definición preliminar de trámites externos y requerimientos documentales.",
+    estado: "En seguimiento",
+    periodo: "2026-06-S1"
+  },
+  {
+    fecha: "03/06/2026",
+    area: "ISSUNNE",
+    linea: "Digitalización",
+    tema: "Digitalización administrativa",
+    resultado: "Reuniones de avance sobre digitalización masiva, circuito de pago a proveedores y árbol de decisión vinculado a procesos institucionales.",
+    estado: "En seguimiento",
+    periodo: "2026-06-S1"
+  },
+  {
+    fecha: "05/06/2026",
+    area: "Parque Tecnológico Corrientes",
+    linea: "Procedimientos administrativos",
+    tema: "Procedimientos varios",
+    resultado: "Revisión de procedimientos y árbol de decisión vinculado a procesos institucionales.",
+    estado: "En seguimiento",
+    periodo: "2026-06-S1"
+  },
+  {
+    fecha: "09/06/2026",
+    area: "Facultad de Humanidades",
+    linea: "Diseño organizacional",
+    tema: "Procedimientos, planta nodocente y EOF",
+    resultado: "Reunión de seguimiento sobre procedimientos, planta nodocente y estructura orgánico-funcional.",
+    estado: "En seguimiento",
+    periodo: "2026-06-S2"
+  },
+  {
+    fecha: "18/06/2026",
+    area: "SGC UNNE",
+    linea: "SGC UNNE",
+    tema: "Revisión por la Dirección",
+    resultado: "Realización de reunión del Comité del SGC para Revisión por la Dirección.",
+    estado: "Realizado",
+    periodo: "2026-06-S3"
+  },
+  {
+    fecha: "23/06/2026",
+    area: "ISSUNNE",
+    linea: "Procedimientos administrativos",
+    tema: "Revisión de procedimientos",
+    resultado: "Entrega de propuesta de revisión de procedimientos administrativos.",
+    estado: "En seguimiento",
+    periodo: "2026-06-S4"
+  },
+  {
+    fecha: "22/06/2026",
+    area: "ISSUNNE",
+    linea: "Digitalización",
+    tema: "Seguimiento de digitalización",
+    resultado: "Reunión de seguimiento con responsables del proceso de digitalización.",
+    estado: "En seguimiento",
+    periodo: "2026-06-S4"
+  },
+  {
+    fecha: "24/06/2026",
+    area: "Otros",
+    linea: "Convenios / coordinación externa",
+    tema: "Reunión de equipo",
+    resultado: "Informe de primera visita presencial, directivas de trabajo y formalización de pautas interinstitucionales.",
+    estado: "En seguimiento",
+    periodo: "2026-06-S4"
+  },
+  {
+    fecha: "25/06/2026",
+    area: "SGC UNNE",
+    linea: "SGC UNNE",
+    tema: "Taller de indicadores",
+    resultado: "Taller con referentes de unidades académicas responsables del PE 8.01.",
+    estado: "Realizado",
+    periodo: "2026-06-S4"
+  },
+  {
+    fecha: "19/06/2026",
+    area: "Dirección General Impositiva y Previsional",
+    linea: "Digitalización",
+    tema: "Comprobantes electrónicos",
+    resultado: "Acuerdo de pasos a seguir para eliminación de conservación de copias en papel de comprobantes electrónicos.",
+    estado: "En seguimiento",
+    periodo: "2026-06-S4"
+  }
+];
+
+function contarPorCampo(datos, campo) {
+  const conteo = {};
+  datos.forEach(item => {
+    conteo[item[campo]] = (conteo[item[campo]] || 0) + 1;
+  });
+  return conteo;
+}
+
+function obtenerMes(fecha) {
+  const partes = fecha.split("/");
+  const mes = partes[1];
+  if (mes === "04") return "Abril";
+  if (mes === "05") return "Mayo";
+  if (mes === "06") return "Junio";
+  return "Otro";
+}
+
+function renderCharts() {
+  const meses = { "Abril": 0, "Mayo": 0, "Junio": 0 };
+
+  reuniones.forEach(r => {
+    meses[obtenerMes(r.fecha)]++;
+  });
+
+  new Chart(document.getElementById("chartMes"), {
+    type: "bar",
+    data: {
+      labels: Object.keys(meses),
+      datasets: [{
+        label: "Reuniones",
+        data: Object.values(meses),
+        backgroundColor: "#2e6da4"
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom" }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  const porLinea = contarPorCampo(reuniones, "linea");
+
+  new Chart(document.getElementById("chartLinea"), {
+    type: "doughnut",
+    data: {
+      labels: Object.keys(porLinea),
+      datasets: [{
+        data: Object.values(porLinea),
+        backgroundColor: [
+          "#2e6da4",
+          "#27ae60",
+          "#e67e22",
+          "#8e44ad",
+          "#e74c3c",
+          "#16a085",
+          "#f1c40f"
+        ],
+        borderWidth: 2,
+        borderColor: "#fff"
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom" }
+      }
+    }
+  });
+
+  const porArea = contarPorCampo(reuniones, "area");
+  const topAreas = Object.entries(porArea)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 12);
+
+  new Chart(document.getElementById("chartArea"), {
+    type: "bar",
+    data: {
+      labels: topAreas.map(item => item[0]),
+      datasets: [{
+        label: "Reuniones",
+        data: topAreas.map(item => item[1]),
+        backgroundColor: "#1a3a6b"
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom" }
+      },
+      scales: {
+        x: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+renderCharts();
+</script>
+
+</body>
+</html>
